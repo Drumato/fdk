@@ -13,9 +13,25 @@ pyenv install 3.8.0
 pyenv global 3.8.0
 pip install pipenv
 
-sudo yum -y install libvirt libvirt-devel
+source /etc/os-release
+if [ $ID = "ubuntu" ] && [ $VERSION_ID = "20.04" ]; then
+        sudo apt -y install qemu-kvm libvirt-daemon-system libvirt-dev python3-dev
+fi
+
+if [ $ID = "centos" ]; then
+        sudo yum -y install libvirt libvirt-devel
+fi
+
 git clone https://github.com/slankdev/fdk.git
 cd fdk
 pipenv sync
 cd playbooks
-pipenv run ansible-playbook main.yaml
+
+if [ $ID = "ubuntu" ] && [ $VERSION_ID = "20.04" ]; then
+        pipenv run ansible-playbook -i inventories/direct.yaml -l machines main.yaml
+fi
+
+if [ $ID = "centos" ]; then
+        pipenv run ansible-playbook -i inventories/vm.yaml main.yaml
+fi
+

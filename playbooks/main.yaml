@@ -1,4 +1,4 @@
-- hosts: localhost
+- hosts: bases
   become: True
   become_method: sudo
   gather_facts: no
@@ -21,6 +21,7 @@
   roles:
   - name: sshserver
     tags: sshserver
+    when: inventory_hostname != 'localhost'
   - name: devpackages
     tags: devpackages
   - name: linux

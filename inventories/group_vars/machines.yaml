@@ -1,0 +1,4 @@
+iproute2_version: 5.13.0
+pahole_version: v1.21
+kernel_version: v5.15-rc1
+frr_repository: https://github.com/FRRouting/frr
